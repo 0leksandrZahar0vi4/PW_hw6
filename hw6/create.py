@@ -31,30 +31,29 @@ if __name__ == '__main__':
     groups_id INTEGER REFERENCES groups(id) on delete cascade
     );
     """
-    sql_create_users_groups = """
+    sql_create_groups = """
     CREATE TABLE groups (
     id SERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL
     );"""
 
-    sql_create_users_subjects = """
+    sql_create_subjects = """
     CREATE TABLE subjects (
     id SERIAL PRIMARY KEY,
     name VARCHAR(175) NOT NULL,
-    teacher_id INTEGER  REFERENCES teachers(id)
-    on delete cascade
+    teacher_id INTEGER REFERENCES teachers(id) on delete cascade
     );"""
     
-    sql_create_users_teachers = """
+    sql_create_teachers = """
     CREATE TABLE teachers (
     id SERIAL PRIMARY KEY,
     fullname VARCHAR(150) NOT NULL
     );"""
     
-    sql_create_users_grades = """
+    sql_create_grades = """
     CREATE TABLE grades (
     id SERIAL PRIMARY KEY,
-    student_id INTEGER REFERENCES users(id) on delete cascade,
+    users_id INTEGER REFERENCES users(id) on delete cascade,
     subject_id INTEGER REFERENCES subjects(id) on delete cascade,
     grade INTEGER CHECK (grade >= 60 AND grade <= 100),
     grade_date DATE NOT NULL
@@ -64,10 +63,10 @@ if __name__ == '__main__':
         with create_connection() as conn:
             if conn is not None:
                 create_table(conn, sql_create_users_table)
-                create_table(conn, sql_create_users_groups)
-                create_table(conn, sql_create_users_subjects)
-                create_table(conn, sql_create_users_teachers)
-                create_table(conn, sql_create_users_grades)
+                create_table(conn, sql_create_groups)
+                create_table(conn, sql_create_subjects)
+                create_table(conn, sql_create_teachers)
+                create_table(conn, sql_create_grades)
             else:
                 print("Error! cannot create the database connection.")
     except RuntimeError as err:
