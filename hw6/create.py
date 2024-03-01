@@ -25,10 +25,10 @@ if __name__ == '__main__':
     sql_create_users_table = """
     CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(120),
-    email VARCHAR(120),
-    age smallint CHECK(age > 18 AND age < 60),
-    groups_id INTEGER REFERENCES groups(id) on delete cascade
+    name VARCHAR(120) NOT NULL,
+    email VARCHAR(120) NOT NULL,
+    age smallint CHECK(age > 18 AND age < 61),
+    group_id INTEGER REFERENCES groups(id) on delete cascade
     );
     """
     sql_create_groups = """
@@ -41,19 +41,19 @@ if __name__ == '__main__':
     CREATE TABLE subjects (
     id SERIAL PRIMARY KEY,
     name VARCHAR(175) NOT NULL,
-    teacher_id INTEGER REFERENCES teachers(id) on delete cascade
+    teacher_id INTEGER REFERENCES teachers(teacher_id) on delete cascade
     );"""
     
     sql_create_teachers = """
     CREATE TABLE teachers (
-    id SERIAL PRIMARY KEY,
+    teacher_id SERIAL PRIMARY KEY,
     fullname VARCHAR(150) NOT NULL
     );"""
     
     sql_create_grades = """
     CREATE TABLE grades (
     id SERIAL PRIMARY KEY,
-    users_id INTEGER REFERENCES users(id) on delete cascade,
+    user_id INTEGER REFERENCES users(id) on delete cascade,
     subject_id INTEGER REFERENCES subjects(id) on delete cascade,
     grade INTEGER CHECK (grade >= 60 AND grade <= 100),
     grade_date DATE NOT NULL

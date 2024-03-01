@@ -14,7 +14,7 @@ def insert_users(conn, sql_expression: str):
     c = conn.cursor()
     try:
         for _ in range(COUNT):
-            c.execute(sql_expression, (fake.name(), fake.email(), randint(19, 61)))
+            c.execute(sql_expression, (fake.name(), fake.email(), randint(19, 60),))
         conn.commit()
     except DatabaseError as e:
         logging.error(e)
@@ -37,7 +37,7 @@ def insert_groups(conn, sql_expression: str):
 def insert_subjects(conn, sql_expression: str):
     c = conn.cursor()
     try:
-        for _ in range(8):
+        for _ in range(4):
             c.execute(sql_expression, (fake.word(),))
         conn.commit()
     except DatabaseError as e:
@@ -49,7 +49,7 @@ def insert_subjects(conn, sql_expression: str):
 def insert_teachers(conn, sql_expression: str):
     c = conn.cursor()
     try:
-        for _ in range(0):
+        for _ in range(4):
             c.execute(sql_expression, (fake.name(),))
         conn.commit()
     except DatabaseError as e:
@@ -61,8 +61,8 @@ def insert_teachers(conn, sql_expression: str):
 def insert_grades(conn, sql_expression: str):
     c = conn.cursor()
     try:
-        for _ in range(800):
-            c.execute(sql_expression, (randint(60,101), fake.date(),))
+        for _ in range(COUNT):
+            c.execute(sql_expression, (randint(60,100), fake.date()))
         conn.commit()
     except DatabaseError as e:
         logging.error(e)
@@ -90,11 +90,11 @@ if __name__ == '__main__':
     try:
         with create_connection() as conn:
             if conn is not None:
-                # insert_users(conn, sql_insert_users)
-                # insert_groups(conn, sql_insert_groups)
-                # insert_subjects(conn, sql_insert_subjects)
+                insert_users(conn, sql_insert_users)
+                insert_groups(conn, sql_insert_groups)
+                insert_subjects(conn, sql_insert_subjects)
                 insert_teachers(conn, sql_insert_teachers)
-                # insert_grades(conn, sql_insert_grades)
+                insert_grades(conn, sql_insert_grades)
             else:
                 print("Error! cannot create the database connection.")
     except RuntimeError as err:
