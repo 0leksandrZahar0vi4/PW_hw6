@@ -27,15 +27,14 @@ if __name__ == '__main__':
     id SERIAL PRIMARY KEY,
     name VARCHAR(120),
     email VARCHAR(120),
-    age smallint CHECK(age > 18 AND age < 60) 
+    age smallint CHECK(age > 18 AND age < 60),
+    groups_id INTEGER REFERENCES groups(id) on delete cascade
     );
     """
     sql_create_users_groups = """
     CREATE TABLE groups (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(50) NOT NULL,
-    users_id INTEGER REFERENCES users(id)
-    on delete cascade
+    name VARCHAR(50) NOT NULL
     );"""
 
     sql_create_users_subjects = """

@@ -14,7 +14,7 @@ def insert_users(conn, sql_expression: str):
     c = conn.cursor()
     try:
         for _ in range(COUNT):
-            c.execute(sql_expression, (fake.name(), fake.email(), randint(19, 60)))
+            c.execute(sql_expression, (fake.name(), fake.email(), randint(19, 61)))
         conn.commit()
     except DatabaseError as e:
         logging.error(e)
@@ -25,7 +25,7 @@ def insert_users(conn, sql_expression: str):
 def insert_groups(conn, sql_expression: str):
     c = conn.cursor()
     try:
-        for _ in range(COUNT):
+        for _ in range(3):
             c.execute(sql_expression, (fake.word(),))
         conn.commit()
     except DatabaseError as e:
@@ -37,8 +37,8 @@ def insert_groups(conn, sql_expression: str):
 def insert_subjects(conn, sql_expression: str):
     c = conn.cursor()
     try:
-        for _ in range(COUNT):
-            c.execute(sql_expression, (fake.word()))
+        for _ in range(8):
+            c.execute(sql_expression, (fake.word(),))
         conn.commit()
     except DatabaseError as e:
         logging.error(e)
@@ -49,8 +49,8 @@ def insert_subjects(conn, sql_expression: str):
 def insert_teachers(conn, sql_expression: str):
     c = conn.cursor()
     try:
-        for _ in range(COUNT):
-            c.execute(sql_expression, (fake.full_name()))
+        for _ in range(5):
+            c.execute(sql_expression, (fake.name(),))
         conn.commit()
     except DatabaseError as e:
         logging.error(e)
@@ -61,8 +61,8 @@ def insert_teachers(conn, sql_expression: str):
 def insert_grades(conn, sql_expression: str):
     c = conn.cursor()
     try:
-        for _ in range(COUNT):
-            c.execute(sql_expression, randint(60,100), fake.date())
+        for _ in range(800):
+            c.execute(sql_expression, (randint(60,101), fake.date()))
         conn.commit()
     except DatabaseError as e:
         logging.error(e)
@@ -72,13 +72,13 @@ def insert_grades(conn, sql_expression: str):
         
 if __name__ == '__main__':
     sql_insert_users = """
-        INSERT INTO users (name, email, password, age) VALUES (%s, %s, %s, %s);
+        INSERT INTO users (name, email, age) VALUES (%s, %s, %s);
         """
     sql_insert_groups = """
         INSERT INTO groups (name) VALUES (%s);
         """
     sql_insert_subjects = """
-        INSERT INTO subjects (name_subject) VALUES (%s);
+        INSERT INTO subjects (name) VALUES (%s);
         """
     sql_insert_teachers = """
         INSERT INTO teachers (fullname) VALUES (%s);
