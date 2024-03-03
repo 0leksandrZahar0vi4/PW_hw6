@@ -14,7 +14,7 @@ def insert_users(conn, sql_expression: str):
     c = conn.cursor()
     try:
         for _ in range(COUNT):
-            c.execute(sql_expression, (fake.name(), fake.email(), randint(19, 60),))
+            c.execute(sql_expression, (fake.name(),))
         conn.commit()
     except DatabaseError as e:
         logging.error(e)
@@ -72,7 +72,7 @@ def insert_grades(conn, sql_expression: str):
         
 if __name__ == '__main__':
     sql_insert_users = """
-        INSERT INTO users (name, email, age) VALUES (%s, %s, %s);
+        INSERT INTO students (name) VALUES (%s);
         """
     sql_insert_groups = """
         INSERT INTO groups (name) VALUES (%s);

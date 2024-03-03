@@ -12,11 +12,11 @@ conn = psycopg2.connect(host="localhost", database="postgres", user="postgres", 
 cur = conn.cursor()
 
 # Додавання груп
-for _ in range(3):
+for _ in range(1, 4):
     cur.execute("INSERT INTO groups (name) VALUES (%s)", (fake.word(),))
 
 # Додавання викладачів
-for _ in range(3):
+for _ in range(1,4):
     cur.execute("INSERT INTO teachers (fullname) VALUES (%s)", (fake.name(),))
 
 # Додавання предметів із вказівкою викладача
@@ -27,13 +27,13 @@ for teacher_id in range(1, 4):
 # Додавання студентів і оцінок
 for group_id in range(1, 4):
     for _ in range(10):
-        cur.execute("INSERT INTO users (name, email, age, group_id) VALUES (%s, %s, %s, %s) RETURNING id",
-                    (fake.name(), fake.email(), random.randint(18, 60), group_id))
-users_id = cur.fetchone()[0]
-for subjects_id in range(1, 3):
-    for _ in range(10):
-        cur.execute("INSERT INTO grades (user_id, subjects_id, grade, grade_date) VALUES (%s, %s, %s, %s)",
-                    (users_id, subjects_id, random.randint(60, 100), fake.date()))
+        cur.execute("INSERT INTO students (name, group_id) VALUES (%s, %s) RETURNING id",
+                    (fake.name(), group_id))
+        student_id = cur.fetchone()[0]
+        for subject_id in range(1, 7):
+            for _ in range(3):
+                cur.execute("INSERT INTO grades (student_id, subject_id, grade, grade_date) VALUES (%s, %s, %s, %s)",
+                            (student_id, subject_id, random.randint(60, 100), fake.date_this_decade()))
 
 try:
     # Збереження змін

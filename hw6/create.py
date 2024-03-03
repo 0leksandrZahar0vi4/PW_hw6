@@ -23,11 +23,9 @@ def create_table(conn, sql_expression: str):
 
 if __name__ == '__main__':
     sql_create_users_table = """
-    CREATE TABLE IF NOT EXISTS users (
+    CREATE TABLE IF NOT EXISTS students (
     id SERIAL PRIMARY KEY,
     name VARCHAR(120) NOT NULL,
-    email VARCHAR(120) NOT NULL,
-    age smallint CHECK(age > 18 AND age < 61),
     group_id INTEGER REFERENCES groups(id) on delete cascade
     );
     """
@@ -53,7 +51,7 @@ if __name__ == '__main__':
     sql_create_grades = """
     CREATE TABLE grades (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(id) on delete cascade,
+    student_id INTEGER REFERENCES students(id) on delete cascade,
     subject_id INTEGER REFERENCES subjects(id) on delete cascade,
     grade INTEGER CHECK (grade >= 60 AND grade <= 100),
     grade_date DATE NOT NULL
